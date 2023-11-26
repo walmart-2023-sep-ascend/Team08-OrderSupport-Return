@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.walmart.orderhist.constant.ApplicationConstant;
 import com.walmart.orderhist.exception.CartNotFoundException;
 import com.walmart.orderhist.exception.CartServiceException;
 import com.walmart.orderhist.exception.InvalidCartException;
@@ -16,27 +17,27 @@ public class ApplicationExcepetionHandler {
 
 	@ExceptionHandler(OrderNotFoundException.class)
 	public ResponseEntity<String> handleOrderNotFoundException(OrderNotFoundException e) {
-		return new ResponseEntity<>("Order Exception: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ApplicationConstant.ORDER_EXCEPTION + e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(CartNotFoundException.class)
 	public ResponseEntity<String> handleCartNotFoundException(CartNotFoundException e) {
-		return new ResponseEntity<>("Cart Exception: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ApplicationConstant.CART_EXCEPTION + e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(OrderServiceException.class)
 	public ResponseEntity<String> handleOrderServiceException(OrderServiceException e) {
-		return new ResponseEntity<>("Order Exception: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ApplicationConstant.ORDER_EXCEPTION + e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(CartServiceException.class)
 	public ResponseEntity<String> handleCartServiceException(CartServiceException e) {
-		return new ResponseEntity<>("Cart Exception: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ApplicationConstant.CART_EXCEPTION + e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(InvalidCartException.class)
 	public ResponseEntity<String> handleInvalidCartException(CartServiceException e) {
-		return new ResponseEntity<>("Cart Exception: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ApplicationConstant.CART_EXCEPTION + e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(Exception.class)

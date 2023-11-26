@@ -1,75 +1,88 @@
 package com.walmart.orderhist;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import org.bson.Document;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoCursor;
-import com.walmart.orderhist.dao.OrderHistDao;
+import com.walmart.orderhist.dto.CartResponse;
+import com.walmart.orderhist.dto.OrderHistResponse;
+import com.walmart.orderhist.dto.OrderResponse;
+import com.walmart.orderhist.dto.ProductResponse;
+import com.walmart.orderhist.exception.CartNotFoundException;
 import com.walmart.orderhist.exception.OrderNotFoundException;
-import com.walmart.orderhist.exception.UserNotFoundException;
-import com.walmart.orderhist.service.OrderHistService;
+import com.walmart.orderhist.rest.CartAPI;
+import com.walmart.orderhist.rest.OrderAPI;
 import com.walmart.orderhist.service.OrderHistServiceImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class Team08OrderHistoryTrackerApplicationTests {
 
-	/*
-	 * @MockBean private OrderHistDao orderHistDao;
-	 * 
-	 * @Autowired private OrderHistServiceImpl orderHistService;
-	 * 
-	 * @Test void testOrderHist_UserNotFound() { // Mock the behavior of userCheck
-	 * to simulate a user not found
-	 * when(orderHistDao.validUserCheck(anyInt())).thenReturn(false);
-	 * 
-	 * try { // Perform the method invocation orderHistService.orderHist(123); //
-	 * Passing a user ID
-	 * 
-	 * // If no exception is thrown, fail the test
-	 * fail("Expected UserNotFoundException but no exception was thrown"); } catch
-	 * (UserNotFoundException exception) {
-	 * assertEquals(" Not an authorized UserId..Please try login ",
-	 * exception.getMessage()); } catch (OrderNotFoundException exception) {
-	 * 
-	 * 
-	 * } }
-	 * 
-	 * @Test void testOrderHist_OrderNotFound() { // Mock the behavior of userCheck
-	 * to simulate an authorized user
-	 * when(orderHistDao.validUserCheck(anyInt())).thenReturn(true);
-	 * 
-	 * AggregateIterable<Document> mockResult = mock(AggregateIterable.class);
-	 * when(orderHistDao.retrieveOrderAndItem(anyInt())).thenReturn(mockResult);
-	 * 
-	 * MongoCursor<Document> mockCursor = mock(MongoCursor.class);
-	 * when(mockCursor.hasNext()).thenReturn(false); // Simulate an empty result set
-	 * when(mockResult.iterator()).thenReturn(mockCursor);
-	 * 
-	 * try { // Perform the method invocation orderHistService.orderHist(456); //
-	 * Passing a user ID
-	 * 
-	 * // If no exception is thrown, fail the test
-	 * fail("Expected OrderNotFoundException but no exception was thrown"); } catch
-	 * (OrderNotFoundException exception) {
-	 * assertEquals("No order found for this user id.Please try to place the order "
-	 * , exception.getMessage()); } catch (UserNotFoundException e) {
-	 * 
-	 * }
-	 * 
-	 * }
-	 */
+	@MockBean
+	private CartAPI cartAPI;
+
+	@MockBean
+	private OrderAPI orderAPI;
+
+	@Autowired
+	private OrderHistServiceImpl orderService;
+
+	@Test
+	void getOrderHistory_WhenCartAndOrderMatch_ShouldReturnOrderHistResponse() throws Exception {
+		// Arrange
+		String userId = "testUserId";
+
+		List<ProductResponse> dummyProducts = Arrays.asList(new ProductResponse(1, 10), new ProductResponse(2, 20)
+
+		);
+		CartResponse mockCartResponse = new CartResponse(123, 456, 789.0, dummyProducts);
+		OrderResponse mockOrderResponse = new OrderResponse(789, 123, 456, new Date(), 1000.0, "Credit Card", "Paid",
+				new Date(), "Delivered");
+
+		when(cartAPI.getCartDetails(userId)).thenReturn(mockCartResponse);
+		when(orderAPI.getOrderDetails(userId)).thenReturn(mockOrderResponse);
+
+		// Act
+		OrderHistResponse result = orderService.getOrderHistory(userId);
+
+		// Assert
+		assertNotNull(result);
+
+	}
+
+	@Test
+	void getOrderHistory_WhenCartNotFound_ShouldThrowCartNotFoundException() throws Exception {
+		// Arrange
+		String userId = "testUserId";
+
+		when(cartAPI.getCartDetails(userId)).thenReturn(null);
+
+		// Act and Assert
+		assertThrows(CartNotFoundException.class, () -> orderService.getOrderHistory(userId));
+	}
+
+	@Test
+	void getOrderHistory_WhenOrderNotFound_ShouldThrowOrderNotFoundException() throws Exception {
+		// Arrange
+		String userId = "testUserId";
+		CartResponse mockCartResponse = new CartResponse(/* provide necessary details */);
+
+		when(cartAPI.getCartDetails(userId)).thenReturn(mockCartResponse);
+		when(orderAPI.getOrderDetails(userId)).thenReturn(null);
+
+		// Act and Assert
+		assertThrows(OrderNotFoundException.class, () -> orderService.getOrderHistory(userId));
+	}
+
 }

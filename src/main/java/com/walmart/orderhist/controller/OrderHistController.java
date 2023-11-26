@@ -13,12 +13,10 @@ import com.walmart.orderhist.exception.CartServiceException;
 import com.walmart.orderhist.exception.InvalidCartException;
 import com.walmart.orderhist.exception.OrderNotFoundException;
 import com.walmart.orderhist.exception.OrderServiceException;
-import com.walmart.orderhist.exception.UserNotFoundException;
 import com.walmart.orderhist.service.OrderHistServiceImpl;
 
 @RestController
 
-//@Api(tags = "OrderHistController", description = "Order history Controller Details")
 public class OrderHistController {
 
 	@Autowired
@@ -31,8 +29,8 @@ public class OrderHistController {
 
 	@GetMapping("/order/history/{userId}")
 	public ResponseEntity<OrderHistResponse> getOrderHist(@PathVariable @NonNull String userId)
-			throws UserNotFoundException, OrderNotFoundException, CartServiceException, OrderServiceException,
-			CartNotFoundException, InvalidCartException {
+			throws OrderNotFoundException, CartServiceException, OrderServiceException, CartNotFoundException,
+			InvalidCartException {
 
 		return ResponseEntity.ok(orderHistServiceImpl.getOrderHistory(userId));
 
