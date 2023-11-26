@@ -7,27 +7,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.walmart.orderhist.dto.OrderHistResponse;
+import com.walmart.orderhist.exception.CartNotFoundException;
+import com.walmart.orderhist.exception.CartServiceException;
+import com.walmart.orderhist.exception.InvalidCartException;
 import com.walmart.orderhist.exception.OrderNotFoundException;
-import com.walmart.orderhist.exception.UserNotFoundException;
+import com.walmart.orderhist.exception.OrderServiceException;
 import com.walmart.orderhist.service.OrderHistServiceImpl;
 
 @RestController
+
 public class OrderHistController {
 
 	@Autowired
 	private OrderHistServiceImpl orderHistServiceImpl;
 
-	@GetMapping("/hello")
+	@GetMapping("/welcome")
 	public String healthCheck() {
 		return "service is up";
 	}
 
 	@GetMapping("/order/history/{userId}")
-	public ResponseEntity<String> checkOrderHist(@PathVariable @NonNull Integer userId)
-			throws UserNotFoundException, OrderNotFoundException {
+	public ResponseEntity<OrderHistResponse> getOrderHist(@PathVariable @NonNull String userId)
+			throws OrderNotFoundException, CartServiceException, OrderServiceException, CartNotFoundException,
+			InvalidCartException {
 
-		return orderHistServiceImpl.orderHist(userId);
-		
+		return ResponseEntity.ok(orderHistServiceImpl.getOrderHistory(userId));
+
 	}
 
 }

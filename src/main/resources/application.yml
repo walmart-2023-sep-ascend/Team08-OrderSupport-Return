@@ -1,0 +1,9 @@
+server:
+    port: 8181
+ #Service Config   
+capstone:
+  orderservice:
+           url: https://ascend-team08.free.beeceptor.com/order/
+  cartservice:
+          url: https://ascend-team08.free.beeceptor.com/cart/
+          path: fetchCartDetails/user/ 
