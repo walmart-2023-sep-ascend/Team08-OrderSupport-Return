@@ -6,7 +6,7 @@ pipeline {
              git 'Default'
     }
      environment {
-	    APP_NAME = "order_history_tracker1".replaceAll(/[^a-zA-Z0-9._-]/, '_')
+	    APP_NAME = "order-history-tracker"
             RELEASE = "1.0.0"
             DOCKER_USER = "sathishkph"
 	    DOCKER_REGISTRY_URL = "https://hub.docker.com/" 
@@ -57,7 +57,8 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                   docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                   //docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+	           sh 'docker build -t	sathishkph/order-history-tracker .	
                 }
             }
         }
@@ -65,9 +66,12 @@ pipeline {
             steps {
                 script {
                     // Push Docker image to the registry
-                    docker.withRegistry("${DOCKER_REGISTRY_URL}", 'docker') {
-                        docker.image("${DOCKER_IMAGE_NAME}:latest").push()
-			docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
+			withCredentials([string(credentialsId: 'docker',variable: 'docker')])
+			sh 'docker login -u sathishkph -p ${docker}'
+			sh 'docker push sathishkph/order-history-tracker:v2'
+                   // docker.withRegistry("${DOCKER_REGISTRY_URL}", 'docker') {
+                     //   docker.image("${DOCKER_IMAGE_NAME}:latest").push()
+			//docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
             }
