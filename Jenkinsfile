@@ -6,7 +6,7 @@ pipeline {
              git 'Default'
     }
      environment {
-	    APP_NAME = "register-app-pipeline"
+	    APP_NAME = "order-history-tracker"
             RELEASE = "1.0.0"
             DOCKER_USER = "sathishkph"
             DOCKER_PASS = 'Takerisk2296@'
