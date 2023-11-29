@@ -67,7 +67,7 @@ pipeline {
                     // Push Docker image to the registry
                     docker.withRegistry("${DOCKER_REGISTRY_URL}", 'docker') {
                         docker.image("${DOCKER_IMAGE_NAME}:latest").push()
-			docker.image("${DOCKER_IMAGE_NAME}:${IMAGE_TAG}").push()
+			docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
             }
