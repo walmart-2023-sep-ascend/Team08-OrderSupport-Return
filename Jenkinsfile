@@ -66,8 +66,9 @@ pipeline {
             steps {
                 script {
                     // Push Docker image to the registry
-			withCredentials([string(credentialsId: 'docker',variable: 'docker')])
-			sh 'docker login -u sathishkph -p ${docker}'
+			withCredentials([string(credentialsId: 'docker',variable: 'docker')]){
+			    sh 'docker login -u sathishkph -p ${docker}'
+			}
 			sh 'docker push sathishkph/order-history-tracker:v2'
                    // docker.withRegistry("${DOCKER_REGISTRY_URL}", 'docker') {
                      //   docker.image("${DOCKER_IMAGE_NAME}:latest").push()
