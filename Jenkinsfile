@@ -6,11 +6,11 @@ pipeline {
              git 'Default'
     }
      environment {
-	    APP_NAME = "order-history-tracker1"
+	    APP_NAME = "order_history_tracker1".replaceAll(/[^a-zA-Z0-9._-]/, '_')
             RELEASE = "1.0.0"
             DOCKER_USER = "sathishkph"
 	    DOCKER_REGISTRY_URL = "https://hub.docker.com/" 
-            DOCKER_IMAGE_NAME = "${APP_NAME}"
+            DOCKER_IMAGE_NAME = "$(DOCKER_USER)/${APP_NAME}"
             DOCKER_IMAGE_TAG = "${RELEASE}:${BUILD_NUMBER}"
      }
 
