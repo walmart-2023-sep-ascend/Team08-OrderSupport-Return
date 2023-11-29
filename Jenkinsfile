@@ -10,7 +10,7 @@ pipeline {
             RELEASE = "1.0.0"
             DOCKER_USER = "sathishkph"
 	    DOCKER_REGISTRY_URL = "https://hub.docker.com/" 
-            IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+            DOCKER_IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
             IMAGE_TAG = "${RELEASE}:${BUILD_NUMBER}"
      }
 
