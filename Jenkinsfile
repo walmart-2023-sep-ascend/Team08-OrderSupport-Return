@@ -9,9 +9,8 @@ pipeline {
 	    APP_NAME = "order-history-tracker"
             RELEASE = "1.0.0"
             DOCKER_USER = "sathishkph"
-            DOCKER_PASS = 'Takerisk2296@'
             IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-            IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+            IMAGE_TAG = "${RELEASE}:${BUILD_NUMBER}"
 	  }
 
     stages {
@@ -53,19 +52,23 @@ pipeline {
                 }
             }
         } 
-        stage("Build & Push Docker Image") {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image = docker.build "${IMAGE_NAME}"
-                    }
-
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push('latest')
-                    }
+                    // Build Docker image
+                    docker.image("${DOCKER_IMAGE_NAME}").build()
                 }
             }
-	}
+        }
+ 	stage('Push Docker Image') {
+            steps {
+                script {
+                    // Push Docker image to the registry
+                    docker.withRegistry("${DOCKER_REGISTRY_URL}", 'bb459dbc-8478-4d48-a7ed-a827c078906f') {
+                        docker.image("${DOCKER_IMAGE_NAME}:latest").push()
+			docker.image("${DOCKER_IMAGE_NAME}:${IMAGE_TAG}").push()
+                    }
+                }
+            }   
     }
 }
