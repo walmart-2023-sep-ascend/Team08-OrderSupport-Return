@@ -11,7 +11,7 @@ pipeline {
             DOCKER_USER = "sathishkph"
 	    DOCKER_REGISTRY_URL = "https://hub.docker.com/" 
             DOCKER_IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-            IMAGE_TAG = "${RELEASE}:${BUILD_NUMBER}"
+            DOCKER_IMAGE_TAG = "${RELEASE}:${BUILD_NUMBER}"
      }
 
     stages {
@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    docker.image("${DOCKER_IMAGE_NAME}").build()
+                   docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
                 }
             }
         }
