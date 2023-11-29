@@ -69,6 +69,7 @@ pipeline {
 			docker.image("${DOCKER_IMAGE_NAME}:${IMAGE_TAG}").push()
                     }
                 }
-            }   
+            }
+	}		
     }
 }
