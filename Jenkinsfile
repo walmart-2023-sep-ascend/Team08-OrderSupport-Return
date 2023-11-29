@@ -3,6 +3,7 @@ pipeline {
     tools {
              jdk 'OpenJDK 17'
              maven 'Maven3'
+             git 'Default'
     }
 
     stages {
