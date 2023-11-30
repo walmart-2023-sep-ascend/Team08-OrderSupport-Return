@@ -72,7 +72,7 @@ pipeline {
 			//}
 			//sh 'docker push sathishkph/order-history-tracker:v2'
                    withDockerRegistry([credentialsId : "docker",url: "" ]) {
-			   dockerImage.push()
+	           dockerImage.push()
 		   }
                      //   docker.image("${DOCKER_IMAGE_NAME}:latest").push()
 			//docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
