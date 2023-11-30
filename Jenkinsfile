@@ -58,7 +58,7 @@ pipeline {
                 script {
                     // Build Docker image
                   // dockerimage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
-		   dockerImage = docker.build("sathishkph/order-history-tracker:v2")
+		   dockerImage = docker.build("sathishkph/order-history-tracker:v3")
 	          // sh 'docker build -t	sathishkph/order-history-tracker:v2 .'
                 }
             }
@@ -71,7 +71,7 @@ pipeline {
 			//    sh 'docker login -u sathishkph -p ${docker}'
 			//}
 			//sh 'docker push sathishkph/order-history-tracker:v2'
-                  withDockerRegistry(credentialsId: 'bb459dbc-8478-4d48-a7ed-a827c078906f', url: 'https://hub.docker.com/') {
+                  withDockerRegistry(credentialsId: 'bb459dbc-8478-4d48-a7ed-a827c078906f', url: '/') {
 	           dockerImage.push()
 		   }
                      //   docker.image("${DOCKER_IMAGE_NAME}:latest").push()
