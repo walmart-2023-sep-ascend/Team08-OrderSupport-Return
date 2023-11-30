@@ -71,7 +71,7 @@ pipeline {
 			//    sh 'docker login -u sathishkph -p ${docker}'
 			//}
 			//sh 'docker push sathishkph/order-history-tracker:v2'
-                  withDockerRegistry(credentialsId: 'bb459dbc-8478-4d48-a7ed-a827c078906f', url: '/') {
+                  withDockerRegistry(credentialsId: 'bb459dbc-8478-4d48-a7ed-a827c078906f', url: '') {
 	           dockerImage.push()
 		   }
                      //   docker.image("${DOCKER_IMAGE_NAME}:latest").push()
