@@ -55,17 +55,17 @@ pipeline {
         } 
         stage('Build Docker Image') {
             steps {
-               // script {
+                script {
                     // Build Docker image
                   // dockerimage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
 		   dockerImage = docker.build("sathishkph/order-history-tracker:v2")
 	          // sh 'docker build -t	sathishkph/order-history-tracker:v2 .'
-               // }
+                }
             }
         }
  	stage('Push Docker Image') {
             steps {
-              //  script {
+               script {
                     // Push Docker image to the registry
 			//withCredentials([string(credentialsId: 'docker',variable: 'docker')]){
 			//    sh 'docker login -u sathishkph -p ${docker}'
@@ -77,7 +77,7 @@ pipeline {
                      //   docker.image("${DOCKER_IMAGE_NAME}:latest").push()
 			//docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                    // }
-               // }
+               }
             }
 	}		
     }
