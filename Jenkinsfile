@@ -9,9 +9,9 @@ pipeline {
 	    APP_NAME = "order-history-tracker"
             RELEASE = "1.0.0"
             DOCKER_USER = "sathishkph"
-	    DOCKER_REGISTRY_URL = "https://hub.docker.com/" 
-            DOCKER_IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
-            DOCKER_IMAGE_TAG = "${RELEASE}:${BUILD_NUMBER}"
+	    DOCKER_PASS = 'dockerhubcredentials'
+	    DOCKER_IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
+            DOCKER_IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
      }
 
     stages {
@@ -53,32 +53,20 @@ pipeline {
                 }
             }
         } 
-        stage('Build Docker Image') {
+        stage("Build & Push Docker Image") {
             steps {
                 script {
-                    // Build Docker image
-                  // dockerimage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
-		   dockerImage = docker.build("sathishkph/order-history-tracker:v3")
-	          // sh 'docker build -t	sathishkph/order-history-tracker:v2 .'
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                    }
+
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
                 }
             }
-        }
- 	stage('Push Docker Image') {
-            steps {
-               script {
-                    // Push Docker image to the registry
-			//withCredentials([string(credentialsId: 'docker',variable: 'docker')]){
-			//    sh 'docker login -u sathishkph -p ${docker}'
-			//}
-			//sh 'docker push sathishkph/order-history-tracker:v2'
-                  withDockerRegistry(credentialsId: 'bb459dbc-8478-4d48-a7ed-a827c078906f', url: '') {
-	           dockerImage.push()
-		   }
-                     //   docker.image("${DOCKER_IMAGE_NAME}:latest").push()
-			//docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
-                   // }
-               }
-            }
-	}		
+
+       }
     }
 }
