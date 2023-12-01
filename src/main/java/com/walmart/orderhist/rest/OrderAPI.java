@@ -1,7 +1,6 @@
 package com.walmart.orderhist.rest;
 
 import org.slf4j.Logger;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +20,9 @@ public class OrderAPI {
 	private RestTemplate restTemplate;
 
 	private static final Logger log = LoggerFactory.getLogger(OrderAPI.class);
-	
+
 	@Value("${capstone.orderservice.url}")
-	private String orderService ;   
+	private String orderService;
 
 	public OrderResponse getOrderDetails(String userId) throws OrderServiceException {
 
@@ -38,8 +37,8 @@ public class OrderAPI {
 				return null;
 			}
 		} catch (Exception e) {
-			log.info("Order service Exception for this  userId -{}", userId);
-			e.printStackTrace();
+			log.info("Order service Exception for this  userId :{}", userId + e.getMessage());
+
 			throw new OrderServiceException("Order service down");
 
 		}

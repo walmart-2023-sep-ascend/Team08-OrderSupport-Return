@@ -18,12 +18,11 @@ import com.walmart.orderhist.service.OrderHistServiceImpl;
 @RestController
 public class OrderHistController {
 
-	@Autowired
-	private OrderHistServiceImpl orderHistServiceImpl;
+	private final OrderHistServiceImpl orderHistServiceImpl;
 
-	@GetMapping("/welcome")
-	public String healthCheck() {
-		return "service is up";
+	@Autowired
+	public OrderHistController(OrderHistServiceImpl orderHistServiceImpl) {
+		this.orderHistServiceImpl = orderHistServiceImpl;
 	}
 
 	@GetMapping("/order/history/{userId}")

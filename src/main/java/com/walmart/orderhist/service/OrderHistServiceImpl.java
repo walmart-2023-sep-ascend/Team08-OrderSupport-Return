@@ -19,11 +19,18 @@ import com.walmart.orderhist.rest.OrderAPI;
 @Service
 public class OrderHistServiceImpl implements OrderHistService {
 
-	@Autowired
-	private CartAPI cartAPI;
+	private final CartAPI cartAPI;
+	private final OrderAPI orderAPI;
 
 	@Autowired
-	private OrderAPI orderAPI;
+	public OrderHistServiceImpl(CartAPI cartAPI,OrderAPI orderAPI) {
+		this.cartAPI = cartAPI;
+		this.orderAPI = orderAPI;
+	}
+
+	
+
+	
 
 	private static final Logger log = LoggerFactory.getLogger(OrderHistServiceImpl.class);
 
