@@ -73,7 +73,7 @@ public class OrderHistServiceImpl implements OrderHistService {
 	public OrderHistResponse maptoOrderHistResponse(CartResponse cartResponse, OrderResponse orderResponse) {
 
 		OrderHistResponse orderHistResponse = new OrderHistResponse();
-		// Map OrderHistResponse from both CartResponse and OrderResponse
+		// Map OrderHistResponse from both CartResponse and OrderResponses
 		orderHistResponse.setOrderId(orderResponse.getOrderId());
 		orderHistResponse.setDateOfOrder(orderResponse.getDateOfOrder());
 		orderHistResponse.setAmount(orderResponse.getAmount());
