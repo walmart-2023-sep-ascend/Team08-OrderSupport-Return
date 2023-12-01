@@ -99,11 +99,7 @@
 				<configuration>
 					<excludes>
   			        	<exclude>com/walmart/orderhist/dto/**</exclude>	
-  			        	<exclude>com/walmart/orderhist/advice/**</exclude>
-  			        	<exclude>com/walmart/orderhist/exception/**</exclude>
-  			        	<exclude>com/walmart/orderhist/rest/**</exclude>	
-  			        	<exclude>com/walmart/orderhist/constant/**</exclude>
-  	        		</excludes>
+  			   		</excludes>
 				</configuration>
 				<executions>
 					<execution>
