@@ -16,8 +16,12 @@ import com.walmart.orderhist.exception.OrderServiceException;
 @Service
 public class OrderAPI {
 
+	private final RestTemplate restTemplate;
+
 	@Autowired
-	private RestTemplate restTemplate;
+	public OrderAPI(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
 
 	private static final Logger log = LoggerFactory.getLogger(OrderAPI.class);
 

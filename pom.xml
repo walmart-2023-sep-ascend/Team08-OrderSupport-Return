@@ -102,6 +102,7 @@
   			        	<exclude>com/walmart/orderhist/advice/**</exclude>
   			        	<exclude>com/walmart/orderhist/exception/**</exclude>
   			        	<exclude>com/walmart/orderhist/rest/**</exclude>	
+  			        	<exclude>com/walmart/orderhist/constant/**</exclude>
   	        		</excludes>
 				</configuration>
 				<executions>

@@ -45,8 +45,7 @@ public class CartAPI {
 				return null;
 			}
 		} catch (Exception e) {
-			log.info("Cart service Exception for this  userId: {}", userId);
-			e.printStackTrace();
+			log.info("Cart service Exception for this  userId: {}", userId + e.getMessage());
 			throw new CartServiceException("Cart service down");
 
 		}
