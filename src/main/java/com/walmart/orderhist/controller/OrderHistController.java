@@ -16,7 +16,6 @@ import com.walmart.orderhist.exception.OrderServiceException;
 import com.walmart.orderhist.service.OrderHistServiceImpl;
 
 @RestController
-
 public class OrderHistController {
 
 	@Autowired
