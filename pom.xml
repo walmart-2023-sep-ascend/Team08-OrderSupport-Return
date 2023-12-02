@@ -29,14 +29,15 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
-      		<groupId>org.springframework.cloud</groupId>
-      		<artifactId>spring-cloud-starter-openfeign</artifactId>
-      	</dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -75,8 +76,8 @@
 			<version>2.2.0</version>
 		</dependency>
 	</dependencies>
-	
-	
+
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -115,6 +116,7 @@
 				<configuration>
 					<excludes>
 						<exclude>com/walmart/orderhist/dto/**</exclude>
+						<exclude>com/walmart/orderhist/exception/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>

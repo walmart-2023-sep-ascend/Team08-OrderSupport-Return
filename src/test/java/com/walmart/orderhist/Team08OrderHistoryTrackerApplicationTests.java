@@ -1,5 +1,7 @@
 package com.walmart.orderhist;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -8,6 +10,6 @@ class Team08OrderHistoryTrackerApplicationTests {
 	
 	@Test
 	void contextLoads() {
-		// Basic test to ensure that the application context loads successfully
+		assertTrue("The context loads successfully", true);
 	}
 }

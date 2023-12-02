@@ -19,17 +19,17 @@ import com.walmart.orderhist.dto.OrderResponse;
 import com.walmart.orderhist.dto.ProductResponse;
 import com.walmart.orderhist.exception.CartNotFoundException;
 import com.walmart.orderhist.exception.OrderNotFoundException;
-import com.walmart.orderhist.rest.CartAPI;
-import com.walmart.orderhist.rest.OrderAPI;
+import com.walmart.orderhist.feign.CartFeignClient;
+import com.walmart.orderhist.feign.OrderFeignClient;
 
 @SpringBootTest
 class OrderHistServiceImplTests {
 
 	@MockBean
-	private CartAPI cartAPI;
+	private CartFeignClient cartFeignClient;
 
 	@MockBean
-	private OrderAPI orderAPI;
+	private OrderFeignClient orderFeignClient;
 
 	@Autowired
 	private OrderHistServiceImpl orderService;
@@ -46,8 +46,8 @@ class OrderHistServiceImplTests {
 		OrderResponse mockOrderResponse = new OrderResponse(789, 123, 456, new Date(), 1000.0, "Credit Card", "Paid",
 				new Date(), "Delivered");
 
-		when(cartAPI.getCartDetails(userId)).thenReturn(mockCartResponse);
-		when(orderAPI.getOrderDetails(userId)).thenReturn(mockOrderResponse);
+		when(cartFeignClient.getCartDetails(userId)).thenReturn(mockCartResponse);
+		when(orderFeignClient.getOrderDetails(userId)).thenReturn(mockOrderResponse);
 
 		// Act
 		OrderHistResponse result = orderService.getOrderHistory(userId);
@@ -62,7 +62,7 @@ class OrderHistServiceImplTests {
 		// Arrange
 		String userId = "testUserId";
 
-		when(cartAPI.getCartDetails(userId)).thenReturn(null);
+		when(cartFeignClient.getCartDetails(userId)).thenReturn(null);
 
 		// Act and Assert
 		assertThrows(CartNotFoundException.class, () -> orderService.getOrderHistory(userId));
@@ -74,8 +74,8 @@ class OrderHistServiceImplTests {
 		String userId = "testUserId";
 		CartResponse mockCartResponse = new CartResponse(/* provide necessary details */);
 
-		when(cartAPI.getCartDetails(userId)).thenReturn(mockCartResponse);
-		when(orderAPI.getOrderDetails(userId)).thenReturn(null);
+		when(cartFeignClient.getCartDetails(userId)).thenReturn(mockCartResponse);
+		when(orderFeignClient.getOrderDetails(userId)).thenReturn(null);
 
 		// Act and Assert
 		assertThrows(OrderNotFoundException.class, () -> orderService.getOrderHistory(userId));

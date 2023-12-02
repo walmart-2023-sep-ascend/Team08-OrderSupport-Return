@@ -1,7 +1,5 @@
 package com.walmart.orderhist.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,22 +11,25 @@ import com.walmart.orderhist.exception.CartServiceException;
 import com.walmart.orderhist.exception.InvalidCartException;
 import com.walmart.orderhist.exception.OrderNotFoundException;
 import com.walmart.orderhist.exception.OrderServiceException;
-import com.walmart.orderhist.rest.CartAPI;
-import com.walmart.orderhist.rest.OrderAPI;
+import com.walmart.orderhist.feign.CartFeignClient;
+import com.walmart.orderhist.feign.OrderFeignClient;
+
+import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class OrderHistServiceImpl implements OrderHistService {
 
-	private final CartAPI cartAPI;
-	private final OrderAPI orderAPI;
+	private final OrderFeignClient orderFeignClient;
+	private final CartFeignClient cartFeignClient;
 
 	@Autowired
-	public OrderHistServiceImpl(CartAPI cartAPI, OrderAPI orderAPI) {
-		this.cartAPI = cartAPI;
-		this.orderAPI = orderAPI;
-	}
+	public OrderHistServiceImpl(CartFeignClient cartFeignClient, OrderFeignClient orderFeignClient) {
 
-	private static final Logger log = LoggerFactory.getLogger(OrderHistServiceImpl.class);
+		this.cartFeignClient = cartFeignClient;
+		this.orderFeignClient = orderFeignClient;
+	}
 
 	public OrderHistResponse getOrderHistory(String userId) throws OrderNotFoundException, CartServiceException,
 			OrderServiceException, CartNotFoundException, InvalidCartException {
@@ -49,28 +50,38 @@ public class OrderHistServiceImpl implements OrderHistService {
 	}
 
 	public CartResponse getCartResponse(String userId) throws CartServiceException, CartNotFoundException {
+		try {
 
-		CartResponse cartResponse = cartAPI.getCartDetails(userId);
+			CartResponse cartResponse = cartFeignClient.getCartDetails(userId);
 
-		if (cartResponse == null) {
-			// Assuming CartNotFoundException is a custom exception class
-			log.info("Cart not found for user with ID: {}", userId);
-			throw new CartNotFoundException("Cart not found for user with ID: " + userId);
+			if (cartResponse == null) {
+				// Assuming CartNotFoundException is a custom exception class
+				log.info("Cart not found for user with ID: {}", userId);
+				throw new CartNotFoundException("Cart not found for user with ID: " + userId);
+			}
+
+			return cartResponse;
+		} catch (FeignException e) {
+			log.error("Cart Service is down for this user Id : {}", userId);
+			throw new CartServiceException("Cart Service is down for this user Id :" + userId);
 		}
 
-		return cartResponse;
 	}
 
 	public OrderResponse getOrderResponse(String userId) throws OrderNotFoundException, OrderServiceException {
+		try {
+			OrderResponse orderResponse = orderFeignClient.getOrderDetails(userId);
 
-		OrderResponse orderResponse = orderAPI.getOrderDetails(userId);
+			if (orderResponse == null) {
+				log.info("Order not found for user with ID:{} ", userId);
+				throw new OrderNotFoundException("Order not found for user with ID: " + userId);
+			}
 
-		if (orderResponse == null) {
-			log.info("Order not found for user with ID:{} ", userId);
-			throw new OrderNotFoundException("Order not found for user with ID: " + userId);
+			return orderResponse;
+		} catch (FeignException e) {
+			log.error("Order Service is down for this user Id : {}", userId);
+			throw new OrderServiceException("Order Service is down for this user Id :" + userId);
 		}
-
-		return orderResponse;
 	}
 
 	public OrderHistResponse maptoOrderHistResponse(CartResponse cartResponse, OrderResponse orderResponse) {
