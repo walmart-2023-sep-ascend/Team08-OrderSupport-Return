@@ -23,14 +23,10 @@ public class OrderHistServiceImpl implements OrderHistService {
 	private final OrderAPI orderAPI;
 
 	@Autowired
-	public OrderHistServiceImpl(CartAPI cartAPI,OrderAPI orderAPI) {
+	public OrderHistServiceImpl(CartAPI cartAPI, OrderAPI orderAPI) {
 		this.cartAPI = cartAPI;
 		this.orderAPI = orderAPI;
 	}
-
-	
-
-	
 
 	private static final Logger log = LoggerFactory.getLogger(OrderHistServiceImpl.class);
 

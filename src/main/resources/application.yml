@@ -1,5 +1,17 @@
+#Eureka Client Details 
+eureka:
+ client:
+   register-with-eureka: true
+   fetch-registry : true
+   service-url:
+     defaultZone: http://localhost:8761/eureka
+#Server Configuration    
 server:
-    port: 8181
+  port: 9700
+# App and DB Configuration   
+spring:     
+  application:
+   name: ORDER-HISTROY  
  #Service Config   
 capstone:
   orderservice:
