@@ -30,7 +30,7 @@ public class OrderHistServiceImpl implements OrderHistService {
 		this.cartFeignClient = cartFeignClient;
 		this.orderFeignClient = orderFeignClient;
 	}
-
+    //Get Order history   
 	public OrderHistResponse getOrderHistory(String userId) throws OrderNotFoundException, CartServiceException,
 			OrderServiceException, CartNotFoundException, InvalidCartException {
 
@@ -48,7 +48,7 @@ public class OrderHistServiceImpl implements OrderHistService {
 		}
 
 	}
-
+     //Get cart response from feign   
 	public CartResponse getCartResponse(String userId) throws CartServiceException, CartNotFoundException {
 		try {
 
@@ -67,7 +67,7 @@ public class OrderHistServiceImpl implements OrderHistService {
 		}
 
 	}
-
+	//Get Order response from feign 
 	public OrderResponse getOrderResponse(String userId) throws OrderNotFoundException, OrderServiceException {
 		try {
 			OrderResponse orderResponse = orderFeignClient.getOrderDetails(userId);
@@ -83,7 +83,7 @@ public class OrderHistServiceImpl implements OrderHistService {
 			throw new OrderServiceException("Order Service is down for this user Id :" + userId);
 		}
 	}
-
+     //Convert to OrderHist
 	public OrderHistResponse maptoOrderHistResponse(CartResponse cartResponse, OrderResponse orderResponse) {
 
 		OrderHistResponse orderHistResponse = new OrderHistResponse();

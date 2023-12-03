@@ -4,7 +4,7 @@ eureka:
    register-with-eureka: true
    fetch-registry : true
    service-url:
-     defaultZone: http://localhost:8761/eureka
+     defaultZone: http://34.125.137.138:8761/
 #Server Configuration    
 server:
   port: 9700
