@@ -13,7 +13,7 @@ import com.walmart.orderhist.exception.OrderNotFoundException;
 import com.walmart.orderhist.exception.OrderServiceException;
 
 @ControllerAdvice
-public class ApplicationExcepetionHandler {
+public class ApplicationExceptionHandler {
 
 	@ExceptionHandler(OrderNotFoundException.class)
 	public ResponseEntity<String> handleOrderNotFoundException(OrderNotFoundException e) {
@@ -36,8 +36,8 @@ public class ApplicationExcepetionHandler {
 	}
 
 	@ExceptionHandler(InvalidCartException.class)
-	public ResponseEntity<String> handleInvalidCartException(CartServiceException e) {
-		return new ResponseEntity<>(ApplicationConstant.CART_EXCEPTION + e.getMessage(), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> handleInvalidCartException(InvalidCartException e) {
+		return new ResponseEntity<>(ApplicationConstant.INVALID_CART_EXCEPTION + e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(Exception.class)

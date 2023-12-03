@@ -1,7 +1,5 @@
 package com.walmart.orderhist.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +11,26 @@ import com.walmart.orderhist.exception.CartServiceException;
 import com.walmart.orderhist.exception.InvalidCartException;
 import com.walmart.orderhist.exception.OrderNotFoundException;
 import com.walmart.orderhist.exception.OrderServiceException;
-import com.walmart.orderhist.rest.CartAPI;
-import com.walmart.orderhist.rest.OrderAPI;
+import com.walmart.orderhist.feign.CartFeignClient;
+import com.walmart.orderhist.feign.OrderFeignClient;
+
+import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class OrderHistServiceImpl implements OrderHistService {
 
-	@Autowired
-	private CartAPI cartAPI;
+	private final OrderFeignClient orderFeignClient;
+	private final CartFeignClient cartFeignClient;
 
 	@Autowired
-	private OrderAPI orderAPI;
+	public OrderHistServiceImpl(CartFeignClient cartFeignClient, OrderFeignClient orderFeignClient) {
 
-	private static final Logger log = LoggerFactory.getLogger(OrderHistServiceImpl.class);
-
+		this.cartFeignClient = cartFeignClient;
+		this.orderFeignClient = orderFeignClient;
+	}
+    //Get Order history   
 	public OrderHistResponse getOrderHistory(String userId) throws OrderNotFoundException, CartServiceException,
 			OrderServiceException, CartNotFoundException, InvalidCartException {
 
@@ -44,36 +48,46 @@ public class OrderHistServiceImpl implements OrderHistService {
 		}
 
 	}
-
+     //Get cart response from feign   
 	public CartResponse getCartResponse(String userId) throws CartServiceException, CartNotFoundException {
+		try {
 
-		CartResponse cartResponse = cartAPI.getCartDetails(userId);
+			CartResponse cartResponse = cartFeignClient.getCartDetails(userId);
 
-		if (cartResponse == null) {
-			// Assuming CartNotFoundException is a custom exception class
-			log.info("Cart not found for user with ID: {}", userId);
-			throw new CartNotFoundException("Cart not found for user with ID: " + userId);
+			if (cartResponse == null) {
+				// Assuming CartNotFoundException is a custom exception class
+				log.info("Cart not found for user with ID: {}", userId);
+				throw new CartNotFoundException("Cart not found for user with ID: " + userId);
+			}
+
+			return cartResponse;
+		} catch (FeignException e) {
+			log.error("Cart Service is down for this user Id : {}", userId);
+			throw new CartServiceException("Cart Service is down for this user Id :" + userId);
 		}
 
-		return cartResponse;
 	}
-
+	//Get Order response from feign 
 	public OrderResponse getOrderResponse(String userId) throws OrderNotFoundException, OrderServiceException {
+		try {
+			OrderResponse orderResponse = orderFeignClient.getOrderDetails(userId);
 
-		OrderResponse orderResponse = orderAPI.getOrderDetails(userId);
+			if (orderResponse == null) {
+				log.info("Order not found for user with ID:{} ", userId);
+				throw new OrderNotFoundException("Order not found for user with ID: " + userId);
+			}
 
-		if (orderResponse == null) {
-			log.info("Order not found for user with ID:{} ", userId);
-			throw new OrderNotFoundException("Order not found for user with ID: " + userId);
+			return orderResponse;
+		} catch (FeignException e) {
+			log.error("Order Service is down for this user Id : {}", userId);
+			throw new OrderServiceException("Order Service is down for this user Id :" + userId);
 		}
-
-		return orderResponse;
 	}
-
+     //Convert to OrderHist
 	public OrderHistResponse maptoOrderHistResponse(CartResponse cartResponse, OrderResponse orderResponse) {
 
 		OrderHistResponse orderHistResponse = new OrderHistResponse();
-		// Map OrderHistResponse from both CartResponse and OrderResponse
+		// Map OrderHistResponse from both CartResponse and OrderResponses
 		orderHistResponse.setOrderId(orderResponse.getOrderId());
 		orderHistResponse.setDateOfOrder(orderResponse.getDateOfOrder());
 		orderHistResponse.setAmount(orderResponse.getAmount());
