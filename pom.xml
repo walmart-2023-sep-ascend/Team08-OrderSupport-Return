@@ -17,8 +17,8 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
-		<sonar.exclusions>
-			com/walmart/orderhist/dto/**,com/walmart/orderhist/exception/**</sonar.exclusions>
+		<sonar.coverage.exclusions>
+			com/walmart/orderhist/feign/**,com/walmart/orderhist/exception/**</sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
