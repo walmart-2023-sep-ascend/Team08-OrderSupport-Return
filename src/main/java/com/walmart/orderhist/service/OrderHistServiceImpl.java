@@ -1,5 +1,7 @@
 package com.walmart.orderhist.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ public class OrderHistServiceImpl implements OrderHistService {
 	private final OrderFeignClient orderFeignClient;
 	private final CartFeignClient cartFeignClient;
 
+	private static final Logger log = LoggerFactory.getLogger(OrderHistServiceImpl.class);
+	
 	@Autowired
 	public OrderHistServiceImpl(CartFeignClient cartFeignClient, OrderFeignClient orderFeignClient) {
 
