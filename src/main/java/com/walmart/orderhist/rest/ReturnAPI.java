@@ -17,10 +17,10 @@ public class ReturnAPI {
 
 	private static final Logger log = LoggerFactory.getLogger(ReturnAPI.class);
 
-	public OrderReturnResponse getReturnDetails(String orderNum, String emailId) throws ExternalReturnNotRunningException {
+	public OrderReturnResponse getReturnDetails(String orderNum, String reason) throws ExternalReturnNotRunningException {
 
 	    try {
-    		String uri="https://ascend-team08.free.beeceptor.com/track/"+orderNum+"/"+emailId;
+    		String uri="https://ascend-team08.free.beeceptor.com/track/"+orderNum+"/"+reason;
 	    	String jsonResponse=restTemplate.getForObject(uri, String.class);
 	    	ObjectMapper objectMapper = new ObjectMapper();
 	    	OrderReturnResponse returnObject = objectMapper.readValue(jsonResponse, OrderReturnResponse.class);

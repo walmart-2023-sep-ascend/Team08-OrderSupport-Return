@@ -18,10 +18,10 @@ public class OrderReturnController {
 	@Autowired
 	OrderReturnService orderReturnService;
 	@GetMapping("/track/{orderId}/{emailId}")
-	public ResponseEntity<OrderReturnResponse> orderReturn(@PathVariable String orderId, @PathVariable String emailId) {
+	public ResponseEntity<OrderReturnResponse> orderReturn(@PathVariable String orderId, @PathVariable String reason) {
 		ResponseEntity<OrderReturnResponse> orderReturnInfo;
 		try {
-			orderReturnInfo = orderReturnService.orderReturn(orderId, emailId);
+			orderReturnInfo = orderReturnService.orderReturn(orderId, reason);
 			System.out.println( orderReturnInfo);
 			return orderReturnInfo;
 		} catch (ExternalReturnNotRunningException e) {

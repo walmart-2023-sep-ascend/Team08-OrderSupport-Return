@@ -21,9 +21,9 @@ public abstract class OrderReturnServiceImpl implements OrderReturnService {
 	
 	private static final Logger log = LoggerFactory.getLogger(OrderHistServiceImpl.class);
 	
-    public ResponseEntity<OrderReturnResponse> orderTracker(String orderNumber, String emailAdrs) throws ExternalReturnNotRunningException {
+    public ResponseEntity<OrderReturnResponse> orderTracker(String orderNumber, String reason) throws ExternalReturnNotRunningException {
 	    try {
-	    	OrderReturnResponse trackinfo=returnAPI.getReturnDetails(orderNumber, emailAdrs);
+	    	OrderReturnResponse trackinfo=returnAPI.getReturnDetails(orderNumber, reason);
 	    	if(trackinfo!=null) {
 	    		return ResponseEntity.ok().body(trackinfo);
 	    	}
