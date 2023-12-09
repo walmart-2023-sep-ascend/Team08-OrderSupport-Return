@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.walmart.orderhist.dto.OrderReturnResponse;
 import com.walmart.orderhist.exception.ExternalReturnNotRunningException;
 import com.walmart.orderhist.service.OrderReturnService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OrderReturnController {
 	@GetMapping("/welcomeToTracker")
 	public String healthCheck() {
@@ -17,7 +19,7 @@ public class OrderReturnController {
 	}
 	@Autowired
 	OrderReturnService orderReturnService;
-	@GetMapping("/track/{orderId}/{emailId}")
+	@GetMapping("/track/{orderId}/{reason}")
 	public ResponseEntity<OrderReturnResponse> orderReturn(@PathVariable String orderId, @PathVariable String reason) {
 		ResponseEntity<OrderReturnResponse> orderReturnInfo;
 		try {
