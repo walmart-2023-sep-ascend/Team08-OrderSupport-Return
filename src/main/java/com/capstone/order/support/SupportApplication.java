@@ -15,7 +15,7 @@ public class SupportApplication {
 
 	public static void main(String[] args) throws SQLException {
 		SpringApplication.run(SupportApplication.class, args);
-		//emailService.sendEmail(emailService.createEmailBody(orderService.getHO()),"text/html");
+
 	}
 
 }

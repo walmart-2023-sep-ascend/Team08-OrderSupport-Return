@@ -2,12 +2,15 @@ package com.capstone.order.support.controller;
 
 
 import com.capstone.order.support.entity.Ticket;
+import com.capstone.order.support.model.ResponseBean;
 import com.capstone.order.support.model.TicketBean;
 import com.capstone.order.support.repository.TicketDetails;
 import com.capstone.order.support.service.SupportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,17 +25,34 @@ public class TicketController {
     TicketDetails repo;
 
 
+    @PostMapping(value="/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseBean createTicket(@RequestBody TicketBean ticket) {
 
-    @PostMapping("/create")
-    public String createTicket(@RequestBody TicketBean ticket) {
-        //repo.save(ticket);
+        ResponseBean response = new ResponseBean();
+        String ticketNumber = null;
         try {
-            return "Ticket # " + supportService.createTicket(ticket) + " successfully Created ";
+            ticketNumber = supportService.createTicket(ticket);
+            if(ticketNumber.isEmpty())
+            {
+                response.setTicketId("Could not create the ticket");
+                response.setMessage("Please try again after sometime");
+
+
+            }
+            else
+            {
+                response.setTicketId(ticketNumber);
+                response.setMessage("Ticket has been created Successfully!!");
+
+            }
+
         }
         catch(Exception e )
         {
-            return "exception occured while creating ticket "+e;
+            response.setTicketId("Could not create the ticket");
+            response.setMessage(e.toString());
         }
+        return response;
     }
 
     @GetMapping("/find")
