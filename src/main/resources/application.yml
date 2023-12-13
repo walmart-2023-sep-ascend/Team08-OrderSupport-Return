@@ -7,15 +7,16 @@ eureka:
      defaultZone: http://34.125.137.138:8761/
 #Server Configuration    
 server:
-  port: 9700
+  port: 9702
 # App and DB Configuration   
 spring:     
   application:
-   name: ORDER-HISTROY  
+   name: ORDER-RETURN  
  #Service Config   
 capstone:
   orderservice:
            url: https://ascend-team08.free.beeceptor.com/order/     
   cartservice:
           url: https://ascend-team08.free.beeceptor.com/cart/                 
-         
+  returnservice:
+          url: https://ascend-team08.free.beeceptor.com/return/ 

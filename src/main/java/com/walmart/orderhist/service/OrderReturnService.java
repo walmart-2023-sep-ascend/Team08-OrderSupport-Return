@@ -6,6 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface OrderReturnService {
 
-	public ResponseEntity<OrderReturnResponse> orderReturn(String orderNumber, String reason) throws ExternalReturnNotRunningException;
+	public ResponseEntity<OrderReturnResponse> orderReturn(String orderId, String reason) throws ExternalReturnNotRunningException;
 	
 }
