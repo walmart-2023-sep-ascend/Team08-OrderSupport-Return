@@ -36,14 +36,11 @@ public class TicketController {
             {
                 response.setTicketId("Could not create the ticket");
                 response.setMessage("Please try again after sometime");
-
-
             }
             else
             {
                 response.setTicketId(ticketNumber);
                 response.setMessage("Ticket has been created Successfully!!");
-
             }
 
         }
