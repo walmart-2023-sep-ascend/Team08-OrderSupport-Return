@@ -24,12 +24,28 @@ public class OrderReturnController {
 	
 	@PostMapping("/returns")
 	public ResponseEntity<OrderReturnResponse> orderReturn(@RequestBody ReturnRequest returnRequest) {
-		ResponseEntity<OrderReturnResponse> orderReturnInfo;
+		ResponseEntity<OrderReturnResponse> orderReturnInfo = null;
 		try {
-			orderReturnInfo = orderReturnService.orderReturn(returnRequest.getOrderId(),returnRequest.getReason());
 			
-			System.out.println(orderReturnInfo);
+			if(returnRequest.getOrderId()!=null || returnRequest.getReason() != null)
+			{
+				
+				orderReturnInfo = orderReturnService.orderReturn(returnRequest.getOrderId(),returnRequest.getReason());
+							
+				OrderReturnResponse returnResponse = new OrderReturnResponse();
+				
+				returnResponse.setReturnID(orderReturnInfo.getBody().getReturnID());
+				returnResponse.setRefundStatus(orderReturnInfo.getBody().getRefundStatus());
+				returnResponse.setMessage(orderReturnInfo.getBody().getMessage());
+				
+				System.out.println(returnResponse);
+			}
+			else
+			{
+				System.out.println("OrderID or Reason is not Entered.");
+			}
 			return orderReturnInfo;
+			
 		} catch (ExternalReturnNotRunningException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

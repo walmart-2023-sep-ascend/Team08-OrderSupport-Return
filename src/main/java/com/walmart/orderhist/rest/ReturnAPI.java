@@ -1,8 +1,14 @@
 package com.walmart.orderhist.rest;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Service;
@@ -23,7 +29,8 @@ public class ReturnAPI {
 	public OrderReturnResponse getReturnDetails(String orderId, String reason) throws ExternalReturnNotRunningException {
 
 	    try {
-    		String uri="https://orderreturn.free.beeceptor.com/track/"+orderId+"/"+reason;
+    		String uri="https://orderreturn.free.beeceptor.com/returns/"+orderId+"/"+reason;
+	    	
     		String jsonResponse=restTemplate.getForObject(uri, String.class);
 	    	ObjectMapper objectMapper = new ObjectMapper();
 	    	log.info(jsonResponse);
@@ -35,8 +42,10 @@ public class ReturnAPI {
 	    		throw new ExternalReturnNotRunningException("Order not found");
 	    	}
 	    }catch (Exception e) {
+	    	System.out.println(e.toString());
 	    	log.info("External API Return Service down");
 	    	throw new ExternalReturnNotRunningException("External Return APIs not running");
 		}
 	}
+	
 }
